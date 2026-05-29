@@ -1,6 +1,7 @@
 # pet-kemon
 
-A single-page, linktree-style landing page. Plain HTML + CSS, no build step.
+A single-page, linktree-style landing page. Plain HTML + CSS + a small inline
+script for the language toggle. No build step, no dependencies.
 
 ## Local preview
 
@@ -9,8 +10,25 @@ Open `index.html` in any browser. That's it.
 ## Edit links
 
 Each card is an `<a href="#" data-link="...">` in `index.html`. Replace each `#`
-with the real URL. Counts and labels are inline text in the same file. Card colors
-are CSS custom properties at the top of `style.css` (`:root`).
+with the real URL. Card colors are CSS custom properties at the top of
+`style.css` (`:root`).
+
+## Edit follower counts and text (IMPORTANT)
+
+The page is bilingual (TH/EN) via the `I18N` object in the inline `<script>` at the
+bottom of `index.html`. On load, the script **overwrites** the text of every element
+marked `data-i18n`. So to change a follower count, subtitle, bio, or the SALE badge,
+edit the value in **both** the `en` and `th` blocks of that `I18N` object — editing
+the HTML text alone has no effect (it gets replaced on load).
+
+Counts are hardcoded numbers (e.g. `"1.2M subscribers"` / `"ผู้ติดตาม 1.2M"`); update
+them by hand when they change.
+
+## Language toggle
+
+Top-right button switches TH ↔ EN. Default language auto-detects from the browser
+(`navigator.language`): Thai browsers open in Thai, everyone else in English. The
+choice is not persisted — each visit starts from the detected default.
 
 ## Deploy
 
