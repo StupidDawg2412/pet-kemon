@@ -126,3 +126,13 @@ body {
   background: linear-gradient(135deg, var(--shopee-a), var(--shopee-b));
   border: 2px solid #1a1a1a;
 }
+
+.card--youtube { background: var(--youtube); }
+
+.card__arrow {
+  flex: none;
+  font-size: 20px;
+  font-weight: 700;
+  opacity: 0.95;
+  padding-right: 4px;
+}
