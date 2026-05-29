@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { computed, onMounted, ref, watchEffect } from 'vue';
+
 // pet-kemon — "Playful Pack" link hub, bilingual TH/EN.
 // Static page; text lives in I18N and is toggled via the top-right button.
 
 type Lang = "en" | "th";
+
+const [yt_sub, tt_sub, ig_sub, fb_sub, x_sub] = [11, 7,6, 85, 0]
 
 const I18N: Record<Lang, Record<string, string>> = {
   en: {
@@ -10,11 +14,11 @@ const I18N: Record<Lang, Record<string, string>> = {
     shopeeLabel: "Shop my Shopee",
     shopeeSub: "Pamper your overlord & fund their loyal servant →",
     sale: "SALE",
-    youtube: "1.2M subscribers",
-    tiktok: "3.4M followers",
-    instagram: "870K followers",
-    facebook: "248K likes",
-    x: "96K followers",
+    youtube: `${yt_sub} subscribers`,
+    tiktok: `${tt_sub} followers`,
+    instagram: `${ig_sub} followers`,
+    facebook: `${fb_sub} likes`,
+    x: `${x_sub} followers`,
     footer: "made with treats · pet-kemon 2026",
     toggle: "TH",
     toggleAria: "เปลี่ยนเป็นภาษาไทย",
@@ -24,12 +28,12 @@ const I18N: Record<Lang, Record<string, string>> = {
     shopeeLabel: "แผงลอย Shopee",
     shopeeSub: "บำเรอเจ้านายและสนับสนุนทาสได้ที่นี่ →",
     sale: "ลดราคา",
-    youtube: "ผู้ติดตาม 1.2M",
-    tiktok: "ผู้ติดตาม 3.4M",
-    instagram: "ผู้ติดตาม 870K",
-    facebook: "ถูกใจ 248K",
-    x: "ผู้ติดตาม 96K",
-    footer: "ทำด้วยขนมสัตว์ · pet-kemon 2026",
+    youtube: `ผู้ติดตาม ${yt_sub}`,
+    tiktok: `ผู้ติดตาม ${tt_sub}`,
+    instagram: `ผู้ติดตาม ${ig_sub}`,
+    facebook: `ถูกใจ ${fb_sub}`,
+    x: `ผู้ติดตาม ${x_sub}`,
+    footer: "made with treats · pet-kemon 2026",
     toggle: "EN",
     toggleAria: "Switch to English",
   },
