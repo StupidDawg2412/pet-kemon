@@ -131,32 +131,15 @@ body {
   justify-content: center;
 }
 
-/* brand glyphs: SVG files in assets/svg used as CSS masks so color stays in CSS */
+/* brand glyphs: <img> from assets/svg; color baked into each SVG file.
+   Using <img> (not CSS mask) so icons load over file:// too — no CORS. */
 .brand {
   display: block;
   width: 20px;
   height: 20px;
-  color: #fff;
-  background-color: currentColor;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
 }
-.brand--shopee {
-  width: 22px; height: 22px; color: var(--shopee-a);
-  -webkit-mask-image: url("assets/svg/shopee.svg"); mask-image: url("assets/svg/shopee.svg");
-}
-.brand--youtube {
-  width: 22px; height: 22px; color: var(--youtube);
-  -webkit-mask-image: url("assets/svg/youtube.svg"); mask-image: url("assets/svg/youtube.svg");
-}
-.brand--tiktok    { -webkit-mask-image: url("assets/svg/tiktok.svg");    mask-image: url("assets/svg/tiktok.svg"); }
-.brand--instagram { -webkit-mask-image: url("assets/svg/instagram.svg"); mask-image: url("assets/svg/instagram.svg"); }
-.brand--facebook  { -webkit-mask-image: url("assets/svg/facebook.svg");  mask-image: url("assets/svg/facebook.svg"); }
-.brand--x         { -webkit-mask-image: url("assets/svg/x.svg");          mask-image: url("assets/svg/x.svg"); }
+.brand--shopee,
+.brand--youtube { width: 22px; height: 22px; }
 
 .card__body { display: flex; flex-direction: column; gap: 2px; flex: 1; }
 .card__title { font-size: 18px; font-weight: 800; }

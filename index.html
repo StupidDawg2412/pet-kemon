@@ -33,7 +33,7 @@
 
     <a href="#" data-link="shopee" class="card card--full card--shopee">
       <span class="card__icon">
-        <i class="brand brand--shopee" aria-hidden="true"></i>
+        <img class="brand brand--shopee" src="assets/svg/shopee.svg" alt="" aria-hidden="true" />
       </span>
       <span class="card__body">
         <span class="card__title" data-i18n="shopee-title">Shop my Shopee</span>
@@ -44,7 +44,7 @@
 
     <a href="#" data-link="youtube" class="card card--full card--youtube">
       <span class="card__icon">
-        <i class="brand brand--youtube" aria-hidden="true"></i>
+        <img class="brand brand--youtube" src="assets/svg/youtube.svg" alt="" aria-hidden="true" />
       </span>
       <span class="card__body">
         <span class="card__title">YouTube</span>
@@ -56,7 +56,7 @@
     <div class="grid2">
       <a href="#" data-link="tiktok" class="card card--half card--dark">
         <span class="card__icon card__icon--ghost">
-          <i class="brand brand--tiktok" aria-hidden="true"></i>
+          <img class="brand brand--tiktok" src="assets/svg/tiktok.svg" alt="" aria-hidden="true" />
         </span>
         <span class="card__title card__title--sm">TikTok</span>
         <span class="card__sub" data-i18n="tiktok-sub">3.4M followers</span>
@@ -64,7 +64,7 @@
 
       <a href="#" data-link="instagram" class="card card--half card--instagram">
         <span class="card__icon card__icon--ghost">
-          <i class="brand brand--instagram" aria-hidden="true"></i>
+          <img class="brand brand--instagram" src="assets/svg/instagram.svg" alt="" aria-hidden="true" />
         </span>
         <span class="card__title card__title--sm">Instagram</span>
         <span class="card__sub" data-i18n="instagram-sub">870K followers</span>
@@ -74,7 +74,7 @@
     <div class="grid2">
       <a href="#" data-link="facebook" class="card card--half card--facebook">
         <span class="card__icon card__icon--ghost">
-          <i class="brand brand--facebook" aria-hidden="true"></i>
+          <img class="brand brand--facebook" src="assets/svg/facebook.svg" alt="" aria-hidden="true" />
         </span>
         <span class="card__title card__title--sm">Facebook</span>
         <span class="card__sub" data-i18n="facebook-sub">248K likes</span>
@@ -82,7 +82,7 @@
 
       <a href="#" data-link="x" class="card card--half card--dark">
         <span class="card__icon card__icon--ghost">
-          <i class="brand brand--x" aria-hidden="true"></i>
+          <img class="brand brand--x" src="assets/svg/x.svg" alt="" aria-hidden="true" />
         </span>
         <span class="card__title card__title--sm">X</span>
         <span class="card__sub" data-i18n="x-sub">96K followers</span>
@@ -94,32 +94,33 @@
 
   <script>
     (function () {
+      const [yt_sub, tt_sub, ig_sub, fb_sub, x_sub] = [11, 7, 0, 87, 0];
       var I18N = {
         en: {
           bio: "🐾 catch 'em all — news, memes & fluff",
-          "shopee-title": "Shop my Shopee",
-          "shopee-sub": "my fave pet gear & treats →",
+          "shopee-title": "Shopee Stall Shop",
+          "shopee-sub": "Pamper your overlord & fund their loyal servant →",
           sale: "SALE",
-          "youtube-sub": "1.2M subscribers",
-          "tiktok-sub": "3.4M followers",
-          "instagram-sub": "870K followers",
-          "facebook-sub": "248K likes",
-          "x-sub": "96K followers",
+          "youtube-sub": `${yt_sub} subscribers`,
+          "tiktok-sub": `${tt_sub} followers`,
+          "instagram-sub": `${ig_sub} followers`,
+          "facebook-sub": `${fb_sub} likes`,
+          "x-sub": `${x_sub} followers`,
           footer: "🐾 made with treats · pet-kemon 2026",
-          toggleLabel: "ไทย",
+          toggleLabel: "TH",
           toggleAria: "เปลี่ยนเป็นภาษาไทย"
         },
         th: {
-          bio: "🐾 เก็บให้ครบทุกตัว — ข่าว มีม และความน่ารัก",
-          "shopee-title": "ช้อปที่ Shopee ของฉัน",
-          "shopee-sub": "ของเล่นและขนมสัตว์ที่ฉันชอบ →",
+          bio: "🐾 catch 'em all — ข่าว มีม และความน่ารัก",
+          "shopee-title": "แผงลอย Shopee",
+          "shopee-sub": "บำเรอเจ้านายและสนับสนุนทาสได้ที่นี่ →",
           sale: "ลดราคา",
-          "youtube-sub": "ผู้ติดตาม 1.2M",
-          "tiktok-sub": "ผู้ติดตาม 3.4M",
-          "instagram-sub": "ผู้ติดตาม 870K",
-          "facebook-sub": "ถูกใจ 248K",
-          "x-sub": "ผู้ติดตาม 96K",
-          footer: "🐾 ทำด้วยขนมสัตว์ · pet-kemon 2026",
+          "youtube-sub": `ผู้ติดตาม ${yt_sub}`,
+          "tiktok-sub": `ผู้ติดตาม ${tt_sub}`,
+          "instagram-sub": `ผู้ติดตาม ${ig_sub}`,
+          "facebook-sub": `ถูกใจ ${fb_sub}`,
+          "x-sub": `ผู้ติดตาม ${x_sub}`,
+          footer: "🐾 made with treats · pet-kemon 2026",
           toggleLabel: "EN",
           toggleAria: "Switch to English"
         }

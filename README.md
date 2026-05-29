@@ -27,12 +27,17 @@ them by hand when they change.
 ## Brand icons
 
 Platform logos live as individual SVG files in `assets/svg/` (official
-[Simple Icons](https://simpleicons.org) marks). They are applied via CSS
-`mask-image` in `style.css` (the `.brand--*` rules), so the SVG files stay as
-pure shapes and their color is set in CSS via the card palette. To swap an icon,
-replace the file in `assets/svg/`; to recolor one, edit the `color` of its
-`.brand--*` rule. The avatar paw and verified check remain inline in `index.html`
-(custom marks, not brand assets).
+[Simple Icons](https://simpleicons.org) marks). They are shown with plain
+`<img src="assets/svg/…">` tags. `<img>` is used (rather than a CSS `mask`) so the
+icons load even when the page is opened directly from disk via `file://` — CSS
+masks are blocked under `file://` by the browser's CORS policy.
+
+Because an `<img>` can't be recolored by CSS, each icon's color is baked into its
+SVG file (`fill="…"` on the path): Shopee orange, YouTube red, the rest white. To
+swap an icon, replace the file in `assets/svg/`; to recolor one, edit the `fill`
+in that `.svg` file. Sizes are set by the `.brand` rules in `style.css`. The
+avatar paw and verified check remain inline in `index.html` (custom marks, not
+brand assets).
 
 ## Language toggle
 
