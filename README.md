@@ -1,64 +1,67 @@
 # pet-kemon
 
-A single-page, linktree-style landing page. Plain HTML + CSS + a small inline
-script for the language toggle. No build step, no dependencies.
+Linktree-style landing page ("Playful Pack" design) built with **Nuxt 3**,
+statically generated and deployable to GitHub Pages, Netlify, or Vercel.
+Bilingual TH/EN with a top-right toggle (initial language auto-detected from the
+browser).
 
-## Local preview
+## Develop
 
-Open `index.html` in any browser. That's it.
+```bash
+npm install
+npm run dev      # http://localhost:3000  (hot reload)
+```
 
-## Edit links
+## Build (static)
 
-Each card is an `<a href="#" data-link="...">` in `index.html`. Replace each `#`
-with the real URL. Card colors are CSS custom properties at the top of
-`style.css` (`:root`).
+```bash
+npm run generate   # outputs .output/public
+npm run preview    # preview the generated site locally
+```
 
-## Edit follower counts and text (IMPORTANT)
+`npm run generate` prerenders the whole site to plain HTML/CSS/JS in
+`.output/public` — no server needed at runtime.
 
-The page is bilingual (TH/EN) via the `I18N` object in the inline `<script>` at the
-bottom of `index.html`. On load, the script **overwrites** the text of every element
-marked `data-i18n`. So to change a follower count, subtitle, bio, or the SALE badge,
-edit the value in **both** the `en` and `th` blocks of that `I18N` object — editing
-the HTML text alone has no effect (it gets replaced on load).
+## Edit content
 
-Counts are hardcoded numbers (e.g. `"1.2M subscribers"` / `"ผู้ติดตาม 1.2M"`); update
-them by hand when they change.
-
-## Brand icons
-
-Platform logos live as individual SVG files in `assets/svg/` (official
-[Simple Icons](https://simpleicons.org) marks). They are shown with plain
-`<img src="assets/svg/…">` tags. `<img>` is used (rather than a CSS `mask`) so the
-icons load even when the page is opened directly from disk via `file://` — CSS
-masks are blocked under `file://` by the browser's CORS policy.
-
-Because an `<img>` can't be recolored by CSS, each icon's color is baked into its
-SVG file (`fill="…"` on the path): Shopee orange, YouTube red, the rest white. To
-swap an icon, replace the file in `assets/svg/`; to recolor one, edit the `fill`
-in that `.svg` file. Sizes are set by the `.brand` rules in `style.css`. The
-avatar paw and verified check remain inline in `index.html` (custom marks, not
-brand assets).
-
-## Language toggle
-
-Top-right button switches TH ↔ EN. Default language auto-detects from the browser
-(`navigator.language`): Thai browsers open in Thai, everyone else in English. The
-choice is not persisted — each visit starts from the detected default.
+All copy lives in the `I18N` object in `app.vue` (`en` and `th` blocks). Edit a
+value in **both** blocks to change a follower count, the tagline, the Shopee
+copy, the footer, etc. Counts are plain strings (e.g. `1.2M subscribers` /
+`ผู้ติดตาม 1.2M`). Link targets are `href="#"` placeholders in `app.vue` — swap in
+real URLs. Brand icons are inline SVG (official Simple Icons paths) in the same
+file; palette colors are CSS custom properties at the top of the `<style>` block.
 
 ## Deploy
 
+All three hosts serve the contents of `.output/public`.
+
 ### GitHub Pages
-1. Push this repo to GitHub.
-2. Settings → Pages → Source: deploy from branch, branch `main`, folder `/ (root)`.
-3. `.nojekyll` is included so GitHub serves files as-is.
+This site is served from a subpath (`https://<user>.github.io/pet-kemon/`), so set
+the base URL when generating:
+
+```bash
+# bash
+NUXT_APP_BASE_URL=/pet-kemon/ npm run generate
+```
+```powershell
+# PowerShell
+$env:NUXT_APP_BASE_URL = "/pet-kemon/"; npm run generate
+```
+
+Publish `.output/public` (a GitHub Action, or push it to a `gh-pages` branch).
+`.nojekyll` is included so GitHub serves the `_nuxt/` assets directory as-is.
 
 ### Netlify
-- Drag-and-drop the project folder at app.netlify.com, **or** connect the repo with:
-  - Build command: *(none)*
-  - Publish directory: `.` (repo root)
+- Build command: `npm run generate`
+- Publish directory: `.output/public`
+- (Served at domain root, so no base URL needed.)
 
 ### Vercel
-- Import the repo at vercel.com. Vercel auto-detects a static site.
-  - Framework preset: **Other**
-  - Build command: *(none)*
-  - Output directory: `.` (repo root)
+- Framework preset: **Nuxt** (auto-detected)
+- Output is `.output/public`; no base URL needed.
+
+## Notes
+
+- `archive/` holds the earlier plain-HTML version and the React/Babel design
+  explorations — kept for reference, not part of the build.
+- Design specs/plans live in `docs/superpowers/`.
