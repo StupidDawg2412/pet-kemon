@@ -59,11 +59,11 @@ const I = {
 };
 
 const links = [
-  { key: "youtube", name: "YouTube", fill: "#FF0033", wide: true, icon: I.youtube },
-  { key: "tiktok", name: "TikTok", fill: "#1C1B22", icon: I.tiktok },
-  { key: "instagram", name: "Instagram", fill: "#D6249F", icon: I.instagram },
-  { key: "facebook", name: "Facebook", fill: "#1877F2", icon: I.facebook },
-  { key: "x", name: "X", fill: "#2B2A33", icon: I.x },
+  { key: "youtube", name: "YouTube", fill: "#FF0033", wide: true, icon: I.youtube, link: 'https://www.youtube.com/@pet-kemon' },
+  { key: "tiktok", name: "TikTok", fill: "#1C1B22", icon: I.tiktok, link: 'https://www.tiktok.com/@pet.kemon' },
+  { key: "instagram", name: "Instagram", fill: "#D6249F", icon: I.instagram, link: 'https://www.instagram.com/pet.kemon/' },
+  { key: "facebook", name: "Facebook", fill: "#1877F2", icon: I.facebook, link: 'https://www.facebook.com/profile.php?id=61590497003963' },
+  { key: "x", name: "X", fill: "#2B2A33", icon: I.x, link: 'https://x.com/pet_kemon' },
 ] as const;
 
 function toggle() {
@@ -110,7 +110,7 @@ watchEffect(() => {
       </header>
 
       <!-- featured shopee -->
-      <a href="#" class="card shopee" @click.prevent>
+      <a href="https://collshp.com/pet.kemon?view=storefront" class="card shopee">
         <span class="card__icon shopee__icon" v-html="I.shopee" />
         <span class="card__body">
           <span class="card__title shopee__title">{{ tr.shopeeLabel }}</span>
@@ -124,11 +124,10 @@ watchEffect(() => {
         <a
           v-for="l in links"
           :key="l.key"
-          href="#"
+          :href="l.link"
           class="card tile"
           :class="{ 'tile--wide': l.wide }"
           :style="{ background: l.fill }"
-          @click.prevent
         >
           <span class="card__icon" v-html="l.icon" />
           <span class="tile__body">
