@@ -170,3 +170,10 @@ body {
 @media (max-width: 360px) {
   .grid2 { grid-template-columns: 1fr; }
 }
+
+.foot {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
