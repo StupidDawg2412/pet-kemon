@@ -24,6 +24,16 @@ the HTML text alone has no effect (it gets replaced on load).
 Counts are hardcoded numbers (e.g. `"1.2M subscribers"` / `"ผู้ติดตาม 1.2M"`); update
 them by hand when they change.
 
+## Brand icons
+
+Platform logos live as individual SVG files in `assets/svg/` (official
+[Simple Icons](https://simpleicons.org) marks). They are applied via CSS
+`mask-image` in `style.css` (the `.brand--*` rules), so the SVG files stay as
+pure shapes and their color is set in CSS via the card palette. To swap an icon,
+replace the file in `assets/svg/`; to recolor one, edit the `color` of its
+`.brand--*` rule. The avatar paw and verified check remain inline in `index.html`
+(custom marks, not brand assets).
+
 ## Language toggle
 
 Top-right button switches TH ↔ EN. Default language auto-detects from the browser
