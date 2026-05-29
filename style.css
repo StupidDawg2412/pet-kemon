@@ -78,3 +78,51 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   margin-bottom: 6px;
 }
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  border-radius: var(--radius);
+  padding: 18px;
+  text-decoration: none;
+  color: var(--card-text-on-color);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.18); }
+.card:active { transform: translateY(0); }
+
+.card--full { min-height: 76px; }
+
+.card__icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card__body { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.card__title { font-size: 18px; font-weight: 800; }
+.card__sub { font-size: 13px; font-weight: 500; opacity: 0.9; }
+
+.card__badge {
+  flex: none;
+  background: #ffd84d;
+  color: #1a1a1a;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.card--shopee {
+  background: linear-gradient(135deg, var(--shopee-a), var(--shopee-b));
+  border: 2px solid #1a1a1a;
+}
