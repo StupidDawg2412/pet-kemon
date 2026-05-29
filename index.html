@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">EN</button>
+
   <main class="card-stack">
     <div class="avatar" aria-hidden="true">
       <svg viewBox="0 0 48 48" width="40" height="40" fill="#1a1a1a">
@@ -27,7 +29,7 @@
       </svg>
     </h1>
 
-    <p class="bio">🐾 catch 'em all — news, memes &amp; fluff</p>
+    <p class="bio" data-i18n="bio">🐾 catch 'em all — news, memes &amp; fluff</p>
 
     <a href="#" data-link="shopee" class="card card--full card--shopee">
       <span class="card__icon">
@@ -36,10 +38,10 @@
         </svg>
       </span>
       <span class="card__body">
-        <span class="card__title">Shop my Shopee</span>
-        <span class="card__sub">my fave pet gear &amp; treats →</span>
+        <span class="card__title" data-i18n="shopee-title">Shop my Shopee</span>
+        <span class="card__sub" data-i18n="shopee-sub">my fave pet gear &amp; treats →</span>
       </span>
-      <span class="card__badge">SALE</span>
+      <span class="card__badge" data-i18n="sale">SALE</span>
     </a>
 
     <a href="#" data-link="youtube" class="card card--full card--youtube">
@@ -50,7 +52,7 @@
       </span>
       <span class="card__body">
         <span class="card__title">YouTube</span>
-        <span class="card__sub">1.2M subscribers</span>
+        <span class="card__sub" data-i18n="youtube-sub">1.2M subscribers</span>
       </span>
       <span class="card__arrow" aria-hidden="true">↗</span>
     </a>
@@ -63,7 +65,7 @@
           </svg>
         </span>
         <span class="card__title card__title--sm">TikTok</span>
-        <span class="card__sub">3.4M followers</span>
+        <span class="card__sub" data-i18n="tiktok-sub">3.4M followers</span>
       </a>
 
       <a href="#" data-link="instagram" class="card card--half card--instagram">
@@ -75,7 +77,7 @@
           </svg>
         </span>
         <span class="card__title card__title--sm">Instagram</span>
-        <span class="card__sub">870K followers</span>
+        <span class="card__sub" data-i18n="instagram-sub">870K followers</span>
       </a>
     </div>
 
@@ -87,7 +89,7 @@
           </svg>
         </span>
         <span class="card__title card__title--sm">Facebook</span>
-        <span class="card__sub">248K likes</span>
+        <span class="card__sub" data-i18n="facebook-sub">248K likes</span>
       </a>
 
       <a href="#" data-link="x" class="card card--half card--dark">
@@ -97,11 +99,68 @@
           </svg>
         </span>
         <span class="card__title card__title--sm">X</span>
-        <span class="card__sub">96K followers</span>
+        <span class="card__sub" data-i18n="x-sub">96K followers</span>
       </a>
     </div>
 
-    <footer class="foot">🐾 made with treats · pet-kemon 2026</footer>
+    <footer class="foot" data-i18n="footer">🐾 made with treats · pet-kemon 2026</footer>
   </main>
+
+  <script>
+    (function () {
+      var I18N = {
+        en: {
+          bio: "🐾 catch 'em all — news, memes & fluff",
+          "shopee-title": "Shop my Shopee",
+          "shopee-sub": "my fave pet gear & treats →",
+          sale: "SALE",
+          "youtube-sub": "1.2M subscribers",
+          "tiktok-sub": "3.4M followers",
+          "instagram-sub": "870K followers",
+          "facebook-sub": "248K likes",
+          "x-sub": "96K followers",
+          footer: "🐾 made with treats · pet-kemon 2026",
+          toggleLabel: "ไทย",
+          toggleAria: "เปลี่ยนเป็นภาษาไทย"
+        },
+        th: {
+          bio: "🐾 เก็บให้ครบทุกตัว — ข่าว มีม และความน่ารัก",
+          "shopee-title": "ช้อปที่ Shopee ของฉัน",
+          "shopee-sub": "ของเล่นและขนมสัตว์ที่ฉันชอบ →",
+          sale: "ลดราคา",
+          "youtube-sub": "ผู้ติดตาม 1.2M",
+          "tiktok-sub": "ผู้ติดตาม 3.4M",
+          "instagram-sub": "ผู้ติดตาม 870K",
+          "facebook-sub": "ถูกใจ 248K",
+          "x-sub": "ผู้ติดตาม 96K",
+          footer: "🐾 ทำด้วยขนมสัตว์ · pet-kemon 2026",
+          toggleLabel: "EN",
+          toggleAria: "Switch to English"
+        }
+      };
+
+      var btn = document.getElementById("lang-toggle");
+
+      function apply(lang) {
+        var dict = I18N[lang];
+        document.documentElement.lang = lang;
+        var nodes = document.querySelectorAll("[data-i18n]");
+        for (var i = 0; i < nodes.length; i++) {
+          var key = nodes[i].getAttribute("data-i18n");
+          if (dict[key] != null) nodes[i].textContent = dict[key];
+        }
+        btn.textContent = dict.toggleLabel;
+        btn.setAttribute("aria-label", dict.toggleAria);
+        btn.dataset.lang = lang;
+      }
+
+      var initial = (navigator.language || "en").toLowerCase().indexOf("th") === 0 ? "th" : "en";
+      apply(initial);
+
+      btn.addEventListener("click", function () {
+        apply(btn.dataset.lang === "th" ? "en" : "th");
+      });
+    })();
+  </script>
 </body>
 </html>
