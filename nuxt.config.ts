@@ -19,6 +19,7 @@ export default defineNuxtConfig({
         { name: "description", content: "pet-kemon — news, memes & fluff. Catch 'em all." },
       ],
       link: [
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
         { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
         {
