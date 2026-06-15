@@ -6,7 +6,7 @@ import { computed, onMounted, ref, watchEffect } from 'vue';
 
 type Lang = "en" | "th";
 
-const [yt_sub, tt_sub, ig_sub, fb_sub, x_sub] = [11, 7,6, 85, 0]
+const [yt_sub, tt_sub, ig_sub, fb_sub, x_sub] = [132, 730,8, 107, 0]
 
 const I18N: Record<Lang, Record<string, string>> = {
   en: {
