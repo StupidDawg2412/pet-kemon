@@ -28,7 +28,7 @@ const I18N: Record<Lang, Record<string, string>> = {
     shopeeLabel: "แผงลอย Shopee",
     shopeeSub: "บำเรอเจ้านายและสนับสนุนทาสได้ที่นี่ →",
     sale: "ลดราคา",
-    youtube: `ผู้ติดตาม ${yt_sub}`,
+    youtube: `${yt_sub} subscribers`,
     tiktok: `ผู้ติดตาม ${tt_sub}`,
     instagram: `ผู้ติดตาม ${ig_sub}`,
     facebook: `ถูกใจ ${fb_sub}`,
@@ -39,7 +39,7 @@ const I18N: Record<Lang, Record<string, string>> = {
   },
 };
 
-const lang = ref<Lang>("en");
+const lang = ref<Lang>("th");
 const tr = computed(() => I18N[lang.value]);
 
 // Brand glyphs (official Simple Icons paths), white on colored tiles.
@@ -72,7 +72,7 @@ function toggle() {
 
 // Auto-detect browser language on the client (server renders EN to keep SSG stable).
 onMounted(() => {
-  const nav = (navigator.language || "en").toLowerCase();
+  const nav = (navigator.language || "th").toLowerCase();
   if (nav.indexOf("th") === 0) lang.value = "th";
 });
 
