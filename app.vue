@@ -11,8 +11,8 @@ const [yt_sub, tt_sub, ig_sub, fb_sub, x_sub] = [325, 1025,8, 107, 0]
 const I18N: Record<Lang, Record<string, string>> = {
   en: {
     tagline: "catch 'em all — news, memes & fluff",
-    shopeeLabel: "Shop my Shopee",
-    shopeeSub: "Pamper your overlord & fund their loyal servant →",
+    shopeeHeading: "Shop my picks",
+    shopeeStorefront: "Browse the full Shopee store →",
     sale: "SALE",
     youtube: `${yt_sub} subscribers`,
     tiktok: `${tt_sub} followers`,
@@ -25,8 +25,8 @@ const I18N: Record<Lang, Record<string, string>> = {
   },
   th: {
     tagline: "catch 'em all — ข่าว มีม และความน่ารัก",
-    shopeeLabel: "แผงลอย Shopee",
-    shopeeSub: "บำเรอเจ้านายและสนับสนุนทาสได้ที่นี่ →",
+    shopeeHeading: "ของที่คัดมาให้",
+    shopeeStorefront: "ดูร้าน Shopee ทั้งหมด →",
     sale: "ลดราคา",
     youtube: `${yt_sub} subscribers`,
     tiktok: `ผู้ติดตาม ${tt_sub}`,
@@ -65,6 +65,16 @@ const links = [
   { key: "facebook", name: "Facebook", fill: "#1877F2", icon: I.facebook, link: 'https://www.facebook.com/profile.php?id=61590497003963' },
   { key: "x", name: "X", fill: "#2B2A33", icon: I.x, link: 'https://x.com/pet_kemon' },
 ] as const;
+
+// Featured Shopee products. Replace `url` with real item links from your store.
+// `price` is a plain string (shown as subtitle); set `sale: true` to show the SALE badge.
+const shopeeItems = [
+  { name: "Product one", price: "฿199", url: "https://shopee.co.th/", sale: true },
+  { name: "Product two", price: "฿349", url: "https://shopee.co.th/" },
+  { name: "Product three", price: "฿89", url: "https://shopee.co.th/" },
+] as const;
+
+const SHOPEE_STOREFRONT = "https://collshp.com/pet.kemon?view=storefront";
 
 function toggle() {
   lang.value = lang.value === "th" ? "en" : "th";
@@ -109,15 +119,27 @@ watchEffect(() => {
         <p class="bio">🐾 {{ tr.tagline }}</p>
       </header>
 
-      <!-- featured shopee -->
-      <a href="https://collshp.com/pet.kemon?view=storefront" class="card shopee">
-        <span class="card__icon shopee__icon" v-html="I.shopee" />
-        <span class="card__body">
-          <span class="card__title shopee__title">{{ tr.shopeeLabel }}</span>
-          <span class="card__sub">{{ tr.shopeeSub }}</span>
-        </span>
-        <span class="badge">{{ tr.sale }}</span>
-      </a>
+      <!-- featured shopee items -->
+      <section class="shop">
+        <h2 class="shop__head">🛒 {{ tr.shopeeHeading }}</h2>
+        <div class="shop-list">
+          <a
+            v-for="(it, i) in shopeeItems"
+            :key="i"
+            :href="it.url"
+            class="card shop-item"
+          >
+            <span class="card__icon shop-item__icon" v-html="I.shopee" />
+            <span class="card__body">
+              <span class="card__title shop-item__title">{{ it.name }}</span>
+              <span class="card__sub">{{ it.price }}</span>
+            </span>
+            <span v-if="it.sale" class="badge">{{ tr.sale }}</span>
+            <span class="shop-item__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <a :href="SHOPEE_STOREFRONT" class="storefront">{{ tr.shopeeStorefront }}</a>
+      </section>
 
       <!-- tiles -->
       <div class="grid">
@@ -237,14 +259,27 @@ html, body { height: 100%; }
 .card__title { display: block; font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 20px; line-height: 1; }
 .card__sub { display: block; font-size: 13px; font-weight: 600; opacity: 0.88; margin-top: 4px; }
 
-/* shopee */
-.shopee {
-  display: flex; align-items: center; gap: 14px;
-  background: var(--shopee); padding: 15px 17px; margin-bottom: 14px;
+/* shopee item list */
+.shop { margin-bottom: 16px; }
+.shop__head {
+  font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 18px;
+  margin: 0 2px 11px; display: flex; align-items: center; gap: 7px;
 }
-.shopee__icon { width: 50px; height: 50px; border-radius: 15px; }
-.shopee__title { font-size: 22px; }
-.shopee .card__sub { font-weight: 700; opacity: 0.9; }
+.shop-list { display: flex; flex-direction: column; gap: 11px; }
+.shop-item {
+  display: flex; align-items: center; gap: 13px;
+  background: var(--shopee); padding: 13px 15px;
+}
+.shop-item__icon { width: 46px; height: 46px; border-radius: 14px; }
+.shop-item__title { font-size: 18px; }
+.shop-item .card__sub { font-weight: 700; opacity: 0.92; }
+.shop-item__arrow { flex: none; font-size: 19px; opacity: 0.9; }
+.storefront {
+  display: block; text-align: center; margin-top: 12px;
+  color: var(--shopee); font-weight: 800; font-size: 14px;
+  text-decoration: none;
+}
+.storefront:hover { text-decoration: underline; }
 .badge {
   flex: none; background: var(--sun); color: var(--ink);
   font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 12.5px;
