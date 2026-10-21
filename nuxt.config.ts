@@ -7,8 +7,7 @@ export default defineNuxtConfig({
   nitro: { preset: "static" },
 
   app: {
-    // For GitHub Project Pages (user.github.io/pet-kemon) set
-    // NUXT_APP_BASE_URL=/pet-kemon/ when generating. Netlify/Vercel: leave as "/".
+    // Set NUXT_APP_BASE_URL only if hosting under a subpath. CloudFront: leave as "/".
     baseURL: process.env.NUXT_APP_BASE_URL || "/",
     head: {
       htmlAttrs: { lang: "en" },

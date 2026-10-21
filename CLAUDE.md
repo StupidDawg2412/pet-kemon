@@ -20,7 +20,7 @@ npm run build          # server build (not used for deploy; prefer generate)
 
 There are **no tests and no linter** configured.
 
-To reproduce the GitHub Pages build locally (project pages live at a subpath):
+To test a subpath build locally:
 
 ```bash
 # bash
@@ -59,13 +59,17 @@ loaded via `app.head.link`; `app.baseURL` reads `NUXT_APP_BASE_URL` (default `/`
 
 ## Deployment
 
-`.github/workflows/deploy.yml` deploys to GitHub Pages on push to `main`: it derives the
-subpath from `actions/configure-pages` (`base_path`), runs `npm run generate` with
-`NUXT_APP_BASE_URL` set accordingly, and publishes `.output/public`. Repo must have
-**Settings → Pages → Source = GitHub Actions**. Netlify/Vercel serve `.output/public` at
-root (no base URL needed). `public/.nojekyll` keeps GitHub from mangling the `_nuxt/` dir.
+`.github/workflows/deploy.yml` deploys to S3 + CloudFront on push to `main`: runs
+`generate`, assumes an AWS role via OIDC, syncs `.output/public` to the bucket (`_nuxt/*`
+with 1-year immutable cache, the rest `max-age=0,must-revalidate` with `--delete`), then
+invalidates `/*`. Served at root, so no `NUXT_APP_BASE_URL` needed.
 
-CI runs Node 22 (a transitive dep, `rollup-plugin-visualizer`, requires `node >=22`).
+Repo config required: secret `AWS_ROLE_ARN`; variables `AWS_REGION`, `S3_BUCKET`,
+`CLOUDFRONT_DISTRIBUTION_ID`. The role trusts GitHub OIDC for this repo and needs
+`s3:ListBucket/PutObject/DeleteObject` on the bucket and `cloudfront:CreateInvalidation`.
+
+CI uses Bun; local `.nvmrc` pins Node 22 (a transitive dep, `rollup-plugin-visualizer`,
+requires `node >=22`).
 
 ## `archive/` and `docs/`
 
