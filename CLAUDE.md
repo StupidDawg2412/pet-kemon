@@ -68,6 +68,10 @@ Repo config required: secret `AWS_ROLE_ARN`; variables `AWS_REGION`, `S3_BUCKET`
 `CLOUDFRONT_DISTRIBUTION_ID`. The role trusts GitHub OIDC for this repo and needs
 `s3:ListBucket/PutObject/DeleteObject` on the bucket and `cloudfront:CreateInvalidation`.
 
+One-time AWS setup (private bucket + OAC, error pages, OIDC role policies): see
+`docs/aws-cloudfront-setup.md`. `_nuxt/builds/latest.json` is unhashed, so it is excluded
+from the immutable cache.
+
 CI uses Bun; local `.nvmrc` pins Node 22 (a transitive dep, `rollup-plugin-visualizer`,
 requires `node >=22`).
 

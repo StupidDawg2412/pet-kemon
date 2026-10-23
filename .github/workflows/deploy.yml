@@ -35,16 +35,16 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Sync hashed assets (long cache)
+      - name: Sync hashed assets (long cache; latest.json is not hashed)
         run: |
           aws s3 sync .output/public "s3://${{ vars.S3_BUCKET }}" \
-            --exclude "*" --include "_nuxt/*" \
+            --exclude "*" --include "_nuxt/*" --exclude "_nuxt/builds/latest.json" \
             --cache-control "public,max-age=31536000,immutable"
 
       - name: Sync everything else (revalidate)
         run: |
           aws s3 sync .output/public "s3://${{ vars.S3_BUCKET }}" \
-            --exclude "_nuxt/*" --delete \
+            --exclude "_nuxt/*" --include "_nuxt/builds/latest.json" --delete \
             --cache-control "public,max-age=0,must-revalidate"
 
       - name: Invalidate CloudFront
