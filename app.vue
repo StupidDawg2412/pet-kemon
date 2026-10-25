@@ -208,6 +208,7 @@ html, body { height: 100%; }
 
 .page {
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -221,6 +222,7 @@ html, body { height: 100%; }
   width: 100%;
   max-width: 460px;
   padding: 40px 22px 32px;
+  padding-bottom: calc(32px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
 }
@@ -228,8 +230,8 @@ html, body { height: 100%; }
 /* language toggle */
 .lang {
   position: fixed;
-  top: 18px;
-  right: 18px;
+  top: calc(18px + env(safe-area-inset-top));
+  right: calc(18px + env(safe-area-inset-right));
   z-index: 50;
   min-width: 46px;
   cursor: pointer;
@@ -295,7 +297,10 @@ html, body { height: 100%; }
   flex: none; width: 54px; height: 54px; object-fit: cover;
   border-radius: 14px; border: 2.5px solid var(--ink); background: var(--cream);
 }
-.shop-item__title { font-size: 18px; }
+.shop-item__title {
+  font-size: 18px; line-height: 1.15; overflow-wrap: anywhere;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
 .shop-item .card__sub { font-weight: 700; opacity: 0.92; }
 .shop-item__arrow { flex: none; font-size: 19px; opacity: 0.9; }
 .storefront {
@@ -332,5 +337,35 @@ html, body { height: 100%; }
   display: flex; align-items: center; justify-content: center; gap: 8px;
   padding-top: 22px; color: rgba(28, 27, 34, 0.5);
   font-size: 13px; font-weight: 700;
+}
+
+/* ---------- responsive ---------- */
+
+/* mouse / trackpad: hover lift (touch keeps the :active press only) */
+@media (hover: hover) {
+  .card:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+  .card:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
+  .lang:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+}
+
+/* small phones */
+@media (max-width: 360px) {
+  .wrap { padding: 32px 16px 26px; }
+  .handle__name { font-size: 30px; }
+  .bio { font-size: 13.5px; padding: 6px 14px; }
+  .grid { gap: 11px; }
+  .tile { padding: 13px 14px; }
+  .card__title { font-size: 18px; }
+  .shop-item { gap: 11px; padding: 12px 13px; }
+  .shop-item__title { font-size: 16.5px; }
+}
+
+/* tablet / desktop: keep the phone-width column, centered, with a little more air */
+@media (min-width: 720px) {
+  .wrap { max-width: 480px; padding-top: 64px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .lang { transition: none; }
 }
 </style>
