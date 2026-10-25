@@ -72,10 +72,15 @@ const links = [
 //   name  - product title shown on the tile
 //   price - plain string shown as subtitle (typed by hand, refresh when Shopee changes it)
 //   url   - your affiliate link (collshp / Shopee short link)
-//   img   - optional photo saved in public/products/ (e.g. "/products/foo.jpg");
-//           falls back to the Shopee glyph.
-//   sale  - optional, shows the SALE badge
-interface ShopeeItem { name: string; price: string; url: string; img?: string; sale?: boolean }
+//   img    - optional photo saved in public/products/ (e.g. "/products/foo.jpg");
+//            falls back to the Shopee glyph on an orange block.
+//   rating - optional, typed by hand (e.g. "4.8"), shown as "★ 4.8"
+//   sold   - optional, typed by hand (e.g. "1.2k"), shown as "sold 1.2k"
+//   sale   - optional, shows the SALE tag on the photo
+interface ShopeeItem {
+  name: string; price: string; url: string;
+  img?: string; rating?: string; sold?: string; sale?: boolean;
+}
 const shopeeItems: ShopeeItem[] = [
   { name: "Product one", price: "฿199", url: "https://shopee.co.th/", sale: true },
   { name: "Product two", price: "฿349", url: "https://shopee.co.th/" },
@@ -83,6 +88,10 @@ const shopeeItems: ShopeeItem[] = [
 ];
 
 const SHOPEE_STOREFRONT = "https://collshp.com/pet.kemon?view=storefront";
+
+function shopMeta(it: ShopeeItem) {
+  return [it.rating && `★ ${it.rating}`, it.sold && `sold ${it.sold}`].filter(Boolean).join(" · ");
+}
 
 function toggle() {
   lang.value = lang.value === "th" ? "en" : "th";
@@ -135,26 +144,23 @@ watchEffect(() => {
             v-for="(it, i) in shopeeItems"
             :key="i"
             :href="it.url"
-            class="card shop-item"
+            class="pcard"
             target="_blank"
             rel="sponsored noopener noreferrer"
           >
-            <img
-              v-if="it.img"
-              :src="it.img"
-              :alt="it.name"
-              class="shop-item__img"
-              width="54"
-              height="54"
-              loading="lazy"
-            />
-            <span v-else class="card__icon shop-item__icon" v-html="I.shopee" />
-            <span class="card__body">
-              <span class="card__title shop-item__title">{{ it.name }}</span>
-              <span class="card__sub">{{ it.price }}</span>
+            <span class="pcard__photo">
+              <img v-if="it.img" :src="it.img" :alt="it.name" loading="lazy" />
+              <span v-else class="pcard__ph" aria-hidden="true" v-html="I.shopee" />
+              <span v-if="it.sale" class="pcard__tag">{{ tr.sale }}</span>
             </span>
-            <span v-if="it.sale" class="badge">{{ tr.sale }}</span>
-            <span class="shop-item__arrow" aria-hidden="true">↗</span>
+            <span class="pcard__body">
+              <span class="pcard__info">
+                <span class="pcard__name">{{ it.name }}</span>
+                <span class="pcard__price">{{ it.price }}</span>
+                <span v-if="shopMeta(it)" class="pcard__meta">{{ shopMeta(it) }}</span>
+              </span>
+              <span class="pcard__btn">Shopee ↗</span>
+            </span>
           </a>
         </div>
         <a :href="SHOPEE_STOREFRONT" class="storefront" target="_blank" rel="sponsored noopener noreferrer">{{ tr.shopeeStorefront }}</a>
@@ -287,22 +293,39 @@ html, body { height: 100%; }
   font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 18px;
   margin: 0 2px 11px; display: flex; align-items: center; gap: 7px;
 }
-.shop-list { display: flex; flex-direction: column; gap: 11px; }
-.shop-item {
-  display: flex; align-items: center; gap: 13px;
-  background: var(--shopee); padding: 13px 15px;
+.shop-list { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.pcard {
+  display: flex; flex-direction: column; min-width: 0;
+  background: #fff; color: var(--ink); text-decoration: none;
+  border: 3px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink);
+  overflow: hidden; transition: transform 0.1s, box-shadow 0.1s;
 }
-.shop-item__icon { width: 46px; height: 46px; border-radius: 14px; }
-.shop-item__img {
-  flex: none; width: 54px; height: 54px; object-fit: cover;
-  border-radius: 14px; border: 2.5px solid var(--ink); background: var(--cream);
+.pcard:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.pcard__photo {
+  position: relative; display: block; aspect-ratio: 1 / 1;
+  background: var(--shopee); border-bottom: 3px solid var(--ink);
 }
-.shop-item__title {
-  font-size: 18px; line-height: 1.15; overflow-wrap: anywhere;
+.pcard__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pcard__ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.pcard__ph svg { width: 44%; height: 44%; }
+.pcard__tag {
+  position: absolute; top: 8px; left: 8px; background: var(--sun); color: var(--ink);
+  font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 12px;
+  padding: 3px 10px; border-radius: 999px; border: 2px solid var(--ink); transform: rotate(-4deg);
+}
+.pcard__body { display: flex; flex-direction: column; flex: 1; padding: 10px 11px 12px; }
+.pcard__info { display: flex; flex-direction: column; flex: 1; padding-bottom: 10px; }
+.pcard__name {
+  font-weight: 700; font-size: 13.5px; line-height: 1.25; min-height: 2.5em; overflow-wrap: anywhere;
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
 }
-.shop-item .card__sub { font-weight: 700; opacity: 0.92; }
-.shop-item__arrow { flex: none; font-size: 19px; opacity: 0.9; }
+.pcard__price { display: block; font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 19px; color: var(--shopee); margin-top: 4px; }
+.pcard__meta { display: block; font-size: 11.5px; font-weight: 600; opacity: 0.6; margin-top: 2px; }
+.pcard__btn {
+  align-self: stretch; text-align: center;
+  background: var(--shopee); color: #fff; font-weight: 800; font-size: 13px;
+  padding: 7px 0; border-radius: 999px; border: 2.5px solid var(--ink);
+}
 .storefront {
   display: block; text-align: center; margin-top: 12px;
   color: var(--shopee); font-weight: 800; font-size: 14px;
@@ -345,6 +368,8 @@ html, body { height: 100%; }
 @media (hover: hover) {
   .card:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
   .card:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
+  .pcard:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+  .pcard:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
   .lang:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
 }
 
@@ -356,8 +381,9 @@ html, body { height: 100%; }
   .grid { gap: 11px; }
   .tile { padding: 13px 14px; }
   .card__title { font-size: 18px; }
-  .shop-item { gap: 11px; padding: 12px 13px; }
-  .shop-item__title { font-size: 16.5px; }
+  .shop-list { gap: 11px; }
+  .pcard__name { font-size: 12.5px; }
+  .pcard__price { font-size: 17px; }
 }
 
 /* tablet / desktop: keep the phone-width column, centered, with a little more air */
@@ -366,6 +392,6 @@ html, body { height: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card, .lang { transition: none; }
+  .card, .pcard, .lang { transition: none; }
 }
 </style>
