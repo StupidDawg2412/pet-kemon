@@ -13,6 +13,7 @@ const I18N: Record<Lang, Record<string, string>> = {
     tagline: "catch 'em all — news, memes & fluff",
     shopeeHeading: "Shop my picks",
     shopeeStorefront: "Browse the full Shopee store →",
+    shopeeDisclosure: "Affiliate links — I may earn a commission at no extra cost to you.",
     sale: "SALE",
     youtube: `${yt_sub} subscribers`,
     tiktok: `${tt_sub} followers`,
@@ -27,6 +28,7 @@ const I18N: Record<Lang, Record<string, string>> = {
     tagline: "catch 'em all — ข่าว มีม และความน่ารัก",
     shopeeHeading: "ของที่คัดมาให้",
     shopeeStorefront: "ดูร้าน Shopee ทั้งหมด →",
+    shopeeDisclosure: "ลิงก์แอฟฟิลิเอต — อาจได้รับค่าคอมมิชชัน โดยคุณไม่เสียค่าใช้จ่ายเพิ่ม",
     sale: "ลดราคา",
     youtube: `${yt_sub} subscribers`,
     tiktok: `ผู้ติดตาม ${tt_sub}`,
@@ -66,13 +68,19 @@ const links = [
   { key: "x", name: "X", fill: "#2B2A33", icon: I.x, link: 'https://x.com/pet_kemon' },
 ] as const;
 
-// Featured Shopee products. Replace `url` with real item links from your store.
-// `price` is a plain string (shown as subtitle); set `sale: true` to show the SALE badge.
-const shopeeItems = [
+// Featured Shopee products, hand-picked. To add one, append an entry:
+//   name  - product title shown on the tile
+//   price - plain string shown as subtitle (typed by hand, refresh when Shopee changes it)
+//   url   - your affiliate link (collshp / Shopee short link)
+//   img   - optional photo saved in public/products/ (e.g. "/products/foo.jpg");
+//           falls back to the Shopee glyph.
+//   sale  - optional, shows the SALE badge
+interface ShopeeItem { name: string; price: string; url: string; img?: string; sale?: boolean }
+const shopeeItems: ShopeeItem[] = [
   { name: "Product one", price: "฿199", url: "https://shopee.co.th/", sale: true },
   { name: "Product two", price: "฿349", url: "https://shopee.co.th/" },
   { name: "Product three", price: "฿89", url: "https://shopee.co.th/" },
-] as const;
+];
 
 const SHOPEE_STOREFRONT = "https://collshp.com/pet.kemon?view=storefront";
 
@@ -128,8 +136,19 @@ watchEffect(() => {
             :key="i"
             :href="it.url"
             class="card shop-item"
+            target="_blank"
+            rel="sponsored noopener noreferrer"
           >
-            <span class="card__icon shop-item__icon" v-html="I.shopee" />
+            <img
+              v-if="it.img"
+              :src="it.img"
+              :alt="it.name"
+              class="shop-item__img"
+              width="54"
+              height="54"
+              loading="lazy"
+            />
+            <span v-else class="card__icon shop-item__icon" v-html="I.shopee" />
             <span class="card__body">
               <span class="card__title shop-item__title">{{ it.name }}</span>
               <span class="card__sub">{{ it.price }}</span>
@@ -138,7 +157,8 @@ watchEffect(() => {
             <span class="shop-item__arrow" aria-hidden="true">↗</span>
           </a>
         </div>
-        <a :href="SHOPEE_STOREFRONT" class="storefront">{{ tr.shopeeStorefront }}</a>
+        <a :href="SHOPEE_STOREFRONT" class="storefront" target="_blank" rel="sponsored noopener noreferrer">{{ tr.shopeeStorefront }}</a>
+        <p class="shop__note">{{ tr.shopeeDisclosure }}</p>
       </section>
 
       <!-- tiles -->
@@ -271,6 +291,10 @@ html, body { height: 100%; }
   background: var(--shopee); padding: 13px 15px;
 }
 .shop-item__icon { width: 46px; height: 46px; border-radius: 14px; }
+.shop-item__img {
+  flex: none; width: 54px; height: 54px; object-fit: cover;
+  border-radius: 14px; border: 2.5px solid var(--ink); background: var(--cream);
+}
 .shop-item__title { font-size: 18px; }
 .shop-item .card__sub { font-weight: 700; opacity: 0.92; }
 .shop-item__arrow { flex: none; font-size: 19px; opacity: 0.9; }
@@ -280,6 +304,7 @@ html, body { height: 100%; }
   text-decoration: none;
 }
 .storefront:hover { text-decoration: underline; }
+.shop__note { margin: 8px 0 0; text-align: center; font-size: 11.5px; font-weight: 600; opacity: 0.6; }
 .badge {
   flex: none; background: var(--sun); color: var(--ink);
   font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 12.5px;
